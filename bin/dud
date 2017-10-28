@@ -1,0 +1,5 @@
+#!/bin/bash
+# Print disk usage one level deep and sort from hight to lowest
+[ -z $1 ] && DEPTH=1 || DEPTH=$1
+du -h -d ${DEPTH} | sort -hr
+

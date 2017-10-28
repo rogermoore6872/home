@@ -1,0 +1,15 @@
+#!/bin/bash
+# Pull all git projects.
+
+GIT_DIR=~/git
+SAVE_PWD=$(pwd)
+
+for project in ${GIT_DIR}/*; do
+	if [ -d ${project}/.git ]; then
+		cd ${project}
+		echo ""; echo "${project}"	
+		git $@
+	fi
+done
+
+cd ${SAVE_PWD}

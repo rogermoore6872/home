@@ -1,0 +1,12 @@
+#!/bin/bash
+# Helper script for logging in/out Opus One jfrog
+
+URL=opusonesolutions-docker.jfrog.io
+USER=opusonesolutions
+PASS=Gr1d05R0cks
+
+if [ -z $1 ]; then
+    docker login ${URL} -u ${USER} -p ${PASS} 
+else
+    docker $1 ${URL}
+fi
