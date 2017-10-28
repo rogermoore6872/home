@@ -29,6 +29,8 @@ vnoremap // y/<<C-R>"<CR>
 
 " Plugin management
 " Install vundle: git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+"
+" From vim run :PluginInstall
 
 set nocompatible
 filetype off
