@@ -1,0 +1,20 @@
+#!/bin/bash
+# Lists newest or oldest file in a directory tree recursively.
+# 
+# Examples:
+# 
+# `newest` lists newest file starting in current directory
+# `newest ~/Documents` lists newest file founf under Documents folder
+# `r=1 newest` lists oldest file
+# `r=1 newest ~/tmp` list oldest from tmp folder
+
+set -eou pipefail
+
+# Optional first parameter is the folder. If not provided use current folder.
+[[ $# -eq 0 ]] && FOLDER='.' || FOLDER=${1}
+
+# Set variable 'r' to anything before calling to get oldest file
+[[ -v r ]] && r='r' || r=''
+
+# The magic part
+ls -alt $(find ${FOLDER} -type f -printf '%T@ %p\n' | sort -n${r} | tail -1 | cut -f2- -d" ")
