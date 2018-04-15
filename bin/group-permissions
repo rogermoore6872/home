@@ -1,0 +1,34 @@
+#!/bin/bash
+set -euo pipefail
+
+function syntax {
+cat << EOF
+NAME
+    group-permission - sets read/write permissions for a group on a folder
+
+SYNOPSIS
+    set-permissions [group] [folder] [user]
+
+DESCRIPTION
+    Enables read/write access for a group recursively on a folder using ACLs
+    and adds the user to the group. The group parameter must be provided. The
+    folder/user parameters default to current folder and user.
+
+EOF
+exit 1
+}
+
+
+[ $# -lt 1 ] && syntax || GROUP=$1
+[ $# -lt 2 ] && FOLDER=$(pwd) || FOLDER=$2
+[ $# -lt 3 ] && USER=$(whoami) || USER=$3
+
+echo "Setting folder [${FOLDER}] to group [${GROUP}] for users [${USER}]'"
+read -p "Continue [y/n]? " -n 1 -r
+[[ $REPLY =~ ^[yY]$ ]] || exit
+
+sudo usermod -a -G ${GROUP} ${USER}
+sudo chgrp -R ${GROUP} ${FOLDER}
+find ${FOLDER} -type f -print0 | sudo xargs -0 chmod  660
+find ${FOLDER} -type d -print0 | sudo xargs -0 chmod 2770
+sudo setfacl -Rdm "u::rwx,g::rwx" ${FOLDER}
