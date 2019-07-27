@@ -1,0 +1,25 @@
+# Copy group membership from one user to another
+set -eou pipefail
+
+function syntax {
+cat << EOF
+NAME
+    copy-groups - copies group permissions from one user to another
+
+SYNOPSIS
+    copy-groups [src user] [dst user]
+
+DESCRIPTION
+    Copies group membership from the source user to the destination user.
+    Warning: this could provide more access beyond what you may want!
+
+EOF
+exit 1
+}
+
+[ $# -lt 1 ] && syntax || SRC_USER=${1}
+[ $# -lt 2 ] && DST_USER=$(whoami) || DST_USER=${2}
+
+for i in $(grep -E "(:|,)${SRC_USER}(:,|$)" /etc/group|cut -f1 -d:) ; do
+    sudo addgroup ${DST_USER} ${i}
+done
