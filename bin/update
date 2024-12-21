@@ -1,5 +1,5 @@
 # Update, upgrade and clean Debian
-sudo apt updatea -y
+sudo apt update -y
 sudo apt dist-upgrade -y
 sudo apt autoremove -y
 sudo apt clean -y
